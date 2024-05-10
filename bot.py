@@ -1,5 +1,7 @@
 import telebot
-from config import TOKEN
+from config import TOKEN, BOT_ADMIN_ID
+from log import get_log_file
+
 bot = telebot.TeleBot(TOKEN)
 
 
@@ -14,8 +16,13 @@ def help(message):
 
 
 @bot.message_handler(commands=['debug'])
-def debug(message):
-    bot.send_message(message.chat.id, 'Здесь будет отправлен файл логов')
+def send_logs(message):
+    chat_id = message.chat.id
+    if chat_id == BOT_ADMIN_ID:
+        with get_log_file() as log_file:
+            bot.send_document(chat_id, log_file)
+    else:
+        bot.send_message(chat_id, 'Недостаточно прав для выполнения команды')
 
 
 @bot.message_handler(content_types=['text'])
