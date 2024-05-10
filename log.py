@@ -12,11 +12,11 @@ logging.basicConfig(
 )
 
 
-def log_info(text: str):
+def log_info(text):
     logging.info(text)
 
 
-def log_error(text: str):
+def log_error(text):
     logging.error(text)
 
 
